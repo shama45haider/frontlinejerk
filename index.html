@@ -51,43 +51,43 @@ body {
   width: 500px;
   max-width: 90vw;
   animation: float 4s ease-in-out infinite;
-  margin-bottom: 10px; /* 🔥 tighter */
+  margin-bottom: 2px; /* 🔥 VERY tight */
 }
 
 @keyframes float {
   0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  50% { transform: translateY(-10px); }
 }
 
 /* NOW OPEN */
 .now-open {
   font-size: 70px;
   font-weight: 900;
-  letter-spacing: 2px;
-
-  margin-top: 0; /* 🔥 removed spacing */
+  letter-spacing: 1px;
+  line-height: 1; /* 🔥 tighter */
 
   background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
   -webkit-background-clip: text;
   color: transparent;
 
   text-shadow:
-    0 0 5px rgba(255,200,0,0.6),
-    0 0 10px rgba(255,150,0,0.7),
-    0 0 20px rgba(255,100,0,0.8);
+    0 0 4px rgba(255,200,0,0.6),
+    0 0 8px rgba(255,150,0,0.7),
+    0 0 15px rgba(255,100,0,0.8);
 }
 
 /* SUBTEXT */
 .subtext {
-  margin-top: 5px; /* 🔥 tighter */
-  font-size: 18px;
+  margin-top: 2px; /* 🔥 almost stacked */
+  font-size: 17px;
+  line-height: 1.1;
   color: #eee;
 }
 
 /* INSTAGRAM */
 .social {
-  margin-top: 5px; /* 🔥 tighter */
-  font-size: 20px;
+  margin-top: 2px; /* 🔥 stacked tight */
+  font-size: 19px;
   font-weight: bold;
   color: #ffcc00;
 }
