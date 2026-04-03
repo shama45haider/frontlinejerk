@@ -18,7 +18,7 @@ body {
   overflow: hidden;
 }
 
-/* 🌴 BACKGROUND */
+/* BACKGROUND */
 .bg {
   position: fixed;
   width: 100%;
@@ -27,7 +27,7 @@ body {
   z-index: -2;
 }
 
-/* 🌑 SHADE */
+/* SHADE */
 .overlay {
   position: fixed;
   width: 100%;
@@ -46,11 +46,12 @@ body {
   text-align: center;
 }
 
-/* 🔥 BIGGER LOGO */
+/* LOGO */
 .logo {
-  width: 500px;   /* 🔥 increased */
+  width: 500px;
   max-width: 90vw;
   animation: float 4s ease-in-out infinite;
+  margin-bottom: 10px; /* 🔥 tighter */
 }
 
 @keyframes float {
@@ -58,12 +59,13 @@ body {
   50% { transform: translateY(-12px); }
 }
 
-/* 🔥 NOW OPEN (REDUCED GLOW) */
+/* NOW OPEN */
 .now-open {
-  margin-top: 20px;
   font-size: 70px;
   font-weight: 900;
   letter-spacing: 2px;
+
+  margin-top: 0; /* 🔥 removed spacing */
 
   background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
   -webkit-background-clip: text;
@@ -77,20 +79,20 @@ body {
 
 /* SUBTEXT */
 .subtext {
-  margin-top: 15px;
+  margin-top: 5px; /* 🔥 tighter */
   font-size: 18px;
   color: #eee;
 }
 
-/* INSTAGRAM SECTION */
+/* INSTAGRAM */
 .social {
-  margin-top: 10px;
+  margin-top: 5px; /* 🔥 tighter */
   font-size: 20px;
   font-weight: bold;
   color: #ffcc00;
 }
 
-/* 🔥 FIRE */
+/* FIRE */
 .fire {
   position: fixed;
   bottom: 0;
@@ -99,7 +101,7 @@ body {
   background: linear-gradient(to top, rgba(255,80,0,0.3), transparent);
 }
 
-/* ✨ EMBERS */
+/* EMBERS */
 .ember {
   position: absolute;
   width: 4px;
@@ -116,7 +118,7 @@ body {
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* 📱 MOBILE */
+/* MOBILE */
 @media (max-width: 768px) {
   .logo {
     width: 280px;
@@ -148,7 +150,6 @@ body {
 <div class="fire"></div>
 
 <script>
-/* EMBERS */
 for(let i=0;i<80;i++){
   let e = document.createElement("div");
   e.className = "ember";
