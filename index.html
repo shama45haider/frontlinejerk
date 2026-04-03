@@ -1,47 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Frontline Jerk</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body {
+* {
   margin: 0;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* BACKGROUND (RESPONSIVE FIX) */
+body {
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 🌴 BACKGROUND */
 .bg {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: url("background.png") center center no-repeat;
-  background-size: cover;
+  background: url("background.png") center/cover no-repeat;
   z-index: -2;
 }
 
-/* SOFTER GLOW */
-.glow {
+/* DARK OVERLAY FOR READABILITY */
+.overlay {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, rgba(255,120,0,0.15), transparent 60%);
-  animation: pulse 4s infinite alternate;
+  background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
+  z-index: -1;
 }
 
-@keyframes pulse {
-  from { opacity: 0.5; }
-  to { opacity: 0.9; }
+/* CENTER CONTENT */
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 
-/* 🔥 FIRE (FIXED - NO MORE BIG BLOCK) */
+/* 🖼️ LOGO */
+.logo {
+  width: 280px;
+  max-width: 80vw;
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* 🔥 NOW OPEN TEXT */
+h1 {
+  margin-top: 20px;
+  font-size: 64px;
+  color: #ffcc00;
+  text-shadow: 0 0 20px orange;
+  animation: glow 1.5s infinite alternate;
+}
+
+/* TEXT ANIMATION */
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px orange;
+    transform: scale(1);
+  }
+  to {
+    text-shadow: 0 0 35px red;
+    transform: scale(1.05);
+  }
+}
+
+/* 🔥 FIRE BASE (SUBTLE) */
 .fire {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 120px; /* reduced height */
+  height: 100px;
   background: linear-gradient(to top, rgba(255,80,0,0.4), transparent);
   animation: flicker 0.3s infinite alternate;
 }
@@ -51,7 +93,7 @@ body {
   to { opacity: 0.8; }
 }
 
-/* EMBERS */
+/* ✨ EMBERS */
 .ember {
   position: absolute;
   width: 4px;
@@ -68,30 +110,14 @@ body {
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* MOUSE GLOW (DISABLE ON MOBILE) */
-.cursor {
-  position: fixed;
-  width: 150px;
-  height: 150px;
-  background: radial-gradient(circle, rgba(255,150,0,0.3), transparent);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-}
-
-/* 📱 MOBILE FIXES */
+/* 📱 MOBILE ADJUSTMENTS */
 @media (max-width: 768px) {
-
-  .cursor {
-    display: none; /* remove mouse glow on phones */
+  h1 {
+    font-size: 40px;
   }
 
-  .glow {
-    background: radial-gradient(circle at center, rgba(255,120,0,0.1), transparent 70%);
-  }
-
-  .fire {
-    height: 80px; /* smaller on mobile */
+  .logo {
+    width: 220px;
   }
 }
 </style>
@@ -101,29 +127,24 @@ body {
 <body>
 
 <div class="bg"></div>
-<div class="glow"></div>
+<div class="overlay"></div>
+
+<div class="container">
+  <img src="logo.png" class="logo">
+  <h1>Now Open</h1>
+</div>
+
 <div class="fire"></div>
-<div class="cursor" id="cursor"></div>
 
 <script>
 
 /* EMBERS */
-for(let i=0;i<100;i++){
+for(let i=0;i<80;i++){
   let e = document.createElement("div");
   e.className = "ember";
   e.style.left = Math.random()*100 + "vw";
-  e.style.animationDuration = (Math.random()*4+2) + "s";
+  e.style.animationDuration = (Math.random()*3+2) + "s";
   document.body.appendChild(e);
-}
-
-/* CURSOR GLOW (DESKTOP ONLY) */
-const cursor = document.getElementById("cursor");
-
-if (window.innerWidth > 768) {
-  document.addEventListener("mousemove", e => {
-    cursor.style.left = e.clientX + "px";
-    cursor.style.top = e.clientY + "px";
-  });
 }
 
 </script>
