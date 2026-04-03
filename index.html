@@ -3,6 +3,8 @@
 <head>
 <title>Frontline Jerk</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
   margin: 0;
@@ -10,52 +12,53 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* BACKGROUND (YOUR IMAGE) */
+/* BACKGROUND (RESPONSIVE FIX) */
 .bg {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: url("background.png") center/cover no-repeat;
+  background: url("background.png") center center no-repeat;
+  background-size: cover;
   z-index: -2;
 }
 
-/* GLOW PULSE */
+/* SOFTER GLOW */
 .glow {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(255,120,0,0.2), transparent);
+  background: radial-gradient(circle at center, rgba(255,120,0,0.15), transparent 60%);
   animation: pulse 4s infinite alternate;
 }
 
 @keyframes pulse {
-  from { opacity: 0.6; }
-  to { opacity: 1; }
+  from { opacity: 0.5; }
+  to { opacity: 0.9; }
 }
 
-/* FIRE FLICKER */
+/* 🔥 FIRE (FIXED - NO MORE BIG BLOCK) */
 .fire {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255,80,0,0.8), transparent);
-  animation: flicker 0.2s infinite alternate;
+  height: 120px; /* reduced height */
+  background: linear-gradient(to top, rgba(255,80,0,0.4), transparent);
+  animation: flicker 0.3s infinite alternate;
 }
 
 @keyframes flicker {
-  from { opacity: 0.7; }
-  to { opacity: 1; }
+  from { opacity: 0.5; }
+  to { opacity: 0.8; }
 }
 
 /* EMBERS */
 .ember {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   background: orange;
   border-radius: 50%;
-  box-shadow: 0 0 10px orange;
+  box-shadow: 0 0 8px orange;
   animation: rise linear infinite;
 }
 
@@ -65,15 +68,31 @@ body {
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* MOUSE GLOW */
+/* MOUSE GLOW (DISABLE ON MOBILE) */
 .cursor {
   position: fixed;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(255,150,0,0.4), transparent);
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(255,150,0,0.3), transparent);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
+}
+
+/* 📱 MOBILE FIXES */
+@media (max-width: 768px) {
+
+  .cursor {
+    display: none; /* remove mouse glow on phones */
+  }
+
+  .glow {
+    background: radial-gradient(circle at center, rgba(255,120,0,0.1), transparent 70%);
+  }
+
+  .fire {
+    height: 80px; /* smaller on mobile */
+  }
 }
 </style>
 
@@ -89,7 +108,7 @@ body {
 <script>
 
 /* EMBERS */
-for(let i=0;i<120;i++){
+for(let i=0;i<100;i++){
   let e = document.createElement("div");
   e.className = "ember";
   e.style.left = Math.random()*100 + "vw";
@@ -97,13 +116,15 @@ for(let i=0;i<120;i++){
   document.body.appendChild(e);
 }
 
-/* CURSOR GLOW */
+/* CURSOR GLOW (DESKTOP ONLY) */
 const cursor = document.getElementById("cursor");
 
-document.addEventListener("mousemove", e => {
-  cursor.style.left = e.clientX + "px";
-  cursor.style.top = e.clientY + "px";
-});
+if (window.innerWidth > 768) {
+  document.addEventListener("mousemove", e => {
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+  });
+}
 
 </script>
 
