@@ -1,0 +1,978 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontline Jerk — Authentic Jamaican Cuisine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:       #0d0d0d;
+  --black-soft:  #141414;
+  --black-card:  #181818;
+  --gold:        #C9972B;
+  --gold-light:  #E8B84B;
+  --gold-pale:   rgba(201,151,43,0.12);
+  --green:       #1A6B3A;
+  --green-mid:   #217A43;
+  --green-light: #2A9954;
+  --green-pale:  rgba(26,107,58,0.12);
+  --white:       #FAFAF8;
+  --off-white:   #F2F0EA;
+  --muted:       rgba(250,250,248,0.5);
+  --border:      rgba(201,151,43,0.18);
+  --border-green:rgba(42,153,84,0.2);
+  --red:         #B03030;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("flag2.jpeg") center center / cover no-repeat;
+  opacity: 0.045;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: luminosity;
+}
+
+/* ── SCROLL PROGRESS ── */
+#scroll-bar {
+  position: fixed; top:0; left:0; height:2px; width:0%;
+  background: linear-gradient(90deg, var(--green-light), var(--gold));
+  z-index: 9999; transition: width 0.1s linear;
+}
+
+/* ── BACK TO TOP ── */
+#back-top {
+  position: fixed; bottom:32px; right:32px;
+  width:44px; height:44px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  border-radius: 2px;
+  font-size:16px; font-family:'Inter',sans-serif; font-weight:600;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; transform:translateY(16px);
+  transition: all 0.3s ease;
+  z-index:9998; letter-spacing:1px;
+}
+#back-top.show { opacity:1; transform:translateY(0); }
+#back-top:hover { background:var(--gold); color:var(--black); }
+
+/* ── HEADER ── */
+header {
+  position: relative;
+  z-index: 10;
+  background: url("flheader.png") center center / cover no-repeat;
+  border-bottom: 1px solid var(--gold);
+  overflow: hidden;
+  min-height: 200px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.72) 100%);
+  z-index: 1;
+}
+
+.header-inner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 24px 24px 20px;
+  gap: 12px; text-align: center;
+}
+
+.header-eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.9;
+}
+
+.logo-img {
+  width: clamp(180px, 30vw, 320px);
+  height: auto; display: block;
+  opacity: 0.92;
+  animation: logoFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes logoFloat {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-8px); }
+}
+
+.header-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 400;
+  color: rgba(250,250,248,0.7);
+  letter-spacing: 1.5px;
+  font-style: italic;
+}
+
+/* ── GOLD RULE ── */
+.gold-rule {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--green-light), var(--gold), transparent);
+  opacity: 0.6;
+  position: relative; overflow: hidden;
+}
+.gold-rule::after {
+  content:''; position:absolute; top:0; left:-40%;
+  width:40%; height:100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: ruleShine 4s ease-in-out infinite;
+}
+@keyframes ruleShine { 0%{left:-40%} 100%{left:140%} }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top:0; z-index:100;
+  background: rgba(13,13,13,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: 1160px; margin:0 auto;
+  display:flex; gap:0;
+  overflow-x:auto; scrollbar-width:none;
+  padding: 0 24px;
+  justify-content: center;
+}
+.nav-inner::-webkit-scrollbar { display:none; }
+
+.nav-btn {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted);
+  background: transparent; border: none;
+  padding: 18px 22px;
+  cursor: pointer; white-space: nowrap;
+  text-decoration: none; display: inline-block;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+.nav-btn::after {
+  content:''; position:absolute; bottom:-1px; left:50%; right:50%;
+  height:2px; background:var(--gold);
+  transition: left 0.3s ease, right 0.3s ease;
+}
+.nav-btn:hover { color:var(--white); }
+.nav-btn:hover::after, .nav-btn.active::after { left:0; right:0; }
+.nav-btn.active { color:var(--gold); }
+
+/* ── HERO BAND ── */
+.hero-band {
+  background: var(--black-soft);
+  padding: 56px 24px 52px;
+  text-align:center;
+  border-bottom: 1px solid var(--border);
+  position:relative; overflow:hidden;
+}
+.hero-band::before {
+  content:'';
+  position:absolute; inset:0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(26,107,58,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-band-inner {
+  max-width: 680px; margin:0 auto; position:relative; z-index:2;
+}
+.hero-band h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 600; color: var(--white);
+  letter-spacing: 0.5px; line-height: 1.2;
+  margin-bottom: 16px;
+}
+.hero-band h2 em {
+  color: var(--gold); font-style: italic;
+}
+.hero-band p {
+  font-size: 15px; font-weight: 400; line-height: 1.8;
+  color: var(--muted); max-width: 520px; margin: 0 auto 28px;
+}
+.hero-badges {
+  display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+}
+.hero-badge {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform:uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border);
+  padding: 7px 16px; border-radius: 2px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.hero-badge:hover {
+  background: var(--gold-pale);
+}
+
+/* ── MAIN ── */
+main {
+  position:relative; z-index:5;
+  max-width: 1160px; margin:0 auto;
+  padding: 64px 24px 80px;
+}
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display:flex; align-items:center; gap:20px;
+  margin-bottom: 40px; margin-top: 72px;
+}
+.section-header:first-child { margin-top:0; }
+
+.section-eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--green-light);
+  white-space: nowrap;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700; color: var(--white);
+  line-height: 1; letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.section-rule {
+  flex:1; height:1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ── MENU GRID ── */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+/* ── MENU CARD ── */
+.menu-card {
+  background: var(--black-card);
+  overflow: hidden;
+  transition: background 0.25s ease;
+  position: relative;
+  cursor: default;
+}
+
+.menu-card:hover { background: #1e1e1e; }
+
+.card-top {
+  background: #111; padding:0;
+  position:relative; overflow:hidden;
+  height: 200px;
+}
+
+.card-photo {
+  width:100%; height:100%;
+  object-fit:cover; display:block;
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.4s ease;
+  filter: brightness(0.88) saturate(1.1);
+}
+
+.menu-card:hover .card-photo {
+  transform: scale(1.04);
+  filter: brightness(1) saturate(1.2);
+}
+
+.card-photo-placeholder {
+  width:100%; height:100%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background: #111; gap:8px;
+}
+.card-photo-placeholder span { font-size:32px; opacity:0.25; }
+.card-photo-placeholder p {
+  font-family:'Montserrat',sans-serif; font-size:10px; font-weight:600;
+  color:rgba(201,151,43,0.3); letter-spacing:2px; text-transform:uppercase;
+}
+
+.card-name-bar {
+  position:absolute; bottom:0; left:0; right:0; z-index:4;
+  padding: 32px 18px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
+}
+
+.card-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.5px;
+  color: var(--white); text-transform: uppercase;
+}
+
+.card-body { padding: 18px 20px 20px; }
+
+.card-desc {
+  font-size: 13px; font-weight: 400;
+  color: var(--muted); line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.card-footer {
+  display:flex; align-items:center;
+  justify-content:space-between; flex-wrap:wrap; gap:8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.card-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--gold); letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+}
+.menu-card:hover .card-price { color: var(--gold-light); }
+
+.heat-indicator { display:flex; gap:3px; align-items:center; }
+.pepper { font-size: 12px; }
+.pepper.off { opacity: 0.2; }
+
+.tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px; font-weight: 700;
+  padding: 4px 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  border-radius: 2px;
+}
+.tag-popular { background: rgba(201,151,43,0.15); color: var(--gold); border: 1px solid rgba(201,151,43,0.3); }
+.tag-new     { background: rgba(26,107,58,0.2);  color: var(--green-light); border: 1px solid rgba(42,153,84,0.3); }
+
+/* ── SIDES & DRINKS SHARED ── */
+.sides-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1px; background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.side-card {
+  background: var(--black-card);
+  padding: 24px 20px;
+  text-align:center;
+  transition: background 0.2s ease;
+  cursor:default;
+}
+.side-card:hover { background: #1e1e1e; }
+
+.side-emoji { font-size:28px; display:block; margin-bottom:10px; opacity:0.85; }
+
+.side-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: 1px;
+  text-transform:uppercase; color: var(--white);
+  margin-bottom: 6px;
+}
+
+.side-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--gold);
+}
+
+.drinks-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap:16px;
+}
+
+.drink-card {
+  background: var(--black-card);
+  border: 1px solid var(--border-green);
+  border-radius: 2px; padding:24px 16px;
+  text-align:center;
+  transition: border-color 0.25s ease, transform 0.3s ease, background 0.2s ease;
+  cursor:default;
+}
+.drink-card:hover {
+  border-color: var(--green-light);
+  transform: translateY(-4px);
+  background: #1a201a;
+}
+
+.drink-emoji { font-size:28px; display:block; margin-bottom:10px; opacity:0.8; }
+
+.drink-name {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: 1px;
+  text-transform:uppercase; color: var(--white); margin-bottom:6px;
+}
+
+.drink-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--gold);
+}
+
+/* ── LOCATION ── */
+.location-section {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: var(--black-card);
+  padding: 48px 40px;
+  margin-top: 72px;
+  position:relative; overflow:hidden;
+}
+
+.location-section::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--green), var(--gold), var(--green));
+}
+
+.location-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 700;
+  color: var(--white); margin-bottom: 32px;
+  letter-spacing: 0.5px;
+}
+
+.location-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap:1px; background: var(--border);
+  border:1px solid var(--border);
+}
+
+.location-item {
+  background: var(--black);
+  padding: 24px; 
+  transition: background 0.2s ease;
+}
+.location-item:hover { background: #161616; }
+
+.location-item-label {
+  font-family:'Montserrat',sans-serif;
+  font-size:9px; font-weight:700; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--green-light);
+  margin-bottom:8px;
+}
+
+.location-item-value {
+  font-size:14px; font-weight:400;
+  color:var(--white); line-height:1.7;
+}
+.location-item-value a { color:var(--gold); text-decoration:none; }
+.location-item-value a:hover { text-decoration:underline; }
+
+.hours-table { width:100%; border-collapse:collapse; }
+.hours-table td { padding: 3px 0; font-size:13px; color:rgba(250,250,248,0.8); }
+.hours-table td:first-child { color:var(--muted); width:110px; }
+
+/* ── FOOTER ── */
+footer {
+  background: #080808;
+  border-top: 1px solid var(--border);
+  padding: 24px 24px 20px;
+  text-align:center;
+  position:relative; z-index:5;
+}
+
+.footer-inner {
+  max-width:480px; margin:0 auto;
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 600;
+  color: var(--gold); letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.footer-rule {
+  width:40px; height:1px;
+  background:var(--gold); margin:14px auto;
+  opacity:0.5;
+}
+
+.footer-sub {
+  font-family:'Montserrat',sans-serif;
+  font-size:10px; font-weight:600;
+  letter-spacing:2px; text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity:0; transform:translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22,1,0.36,1);
+}
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width:640px) {
+  .menu-grid,
+  .location-grid { grid-template-columns:1fr; }
+  .location-section { padding:32px 24px; }
+}
+
+  /* ── SIDES PHOTO ── */
+  .sides-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    background: transparent;
+    border: none;
+  }
+
+  .side-card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    padding: 0;
+    text-align: center;
+    transition: border-color 0.25s ease, transform 0.3s ease;
+    cursor: default;
+  }
+
+  .side-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    background: var(--black-card);
+  }
+
+  .side-photo {
+    width: 100%; height: 160px;
+    object-fit: cover; display: block;
+    transition: transform 0.5s ease, filter 0.3s ease;
+    filter: brightness(0.88) saturate(1.1);
+  }
+
+  .side-card:hover .side-photo {
+    transform: scale(1.05);
+    filter: brightness(1) saturate(1.2);
+  }
+
+  .side-photo-placeholder {
+    width: 100%; height: 160px;
+    display: flex; align-items: center; justify-content: center;
+    background: #111; font-size: 32px; opacity: 0.3;
+  }
+
+  .side-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--white);
+    padding: 14px 12px;
+  }
+
+  .side-emoji { display: none; }
+  .side-price { display: none; }
+
+
+  /* ── DRINK CARDS PHOTO ── */
+  .drinks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+
+  .drink-card {
+    background: var(--black-card);
+    border: 1px solid var(--border-green);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.3s ease;
+    cursor: default;
+    padding: 0;
+  }
+
+  .drink-card:hover {
+    border-color: var(--green-light);
+    transform: translateY(-4px);
+  }
+
+  .drink-photo-wrap {
+    width: 100%; height: 180px;
+    overflow: hidden; position: relative;
+  }
+
+  .drink-photo {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.5s ease, filter 0.3s ease;
+    filter: brightness(0.88) saturate(1.1);
+  }
+
+  .drink-card:hover .drink-photo {
+    transform: scale(1.05);
+    filter: brightness(1) saturate(1.2);
+  }
+
+  .drink-photo-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: #111; font-size: 36px; opacity: 0.3;
+  }
+
+  .drink-info {
+    padding: 16px 18px 18px;
+  }
+
+  .drink-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+    text-transform: uppercase; color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .drink-desc {
+    font-size: 12px; font-weight: 400;
+    color: var(--muted); line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .drink-price {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px; font-weight: 700; color: var(--gold);
+  }
+
+  .drink-emoji { display: none; }
+
+</style>
+</head>
+<body>
+
+<div id="scroll-bar"></div>
+<button id="back-top">↑</button>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <p class="header-eyebrow">Authentic Jamaican Cuisine</p>
+    <img class="logo-img" src="jerklogo.png" alt="Frontline Jerk Logo">
+    <p class="header-tagline">Where the fire meets flavour — Brooklyn, New York</p>
+  </div>
+</header>
+
+<div class="gold-rule"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#jerk"     class="nav-btn">Jerk Chicken</a>
+    <a href="#sides"    class="nav-btn">Sides</a>
+    <a href="#drinks"   class="nav-btn">Drinks</a>
+    <a href="#location" class="nav-btn">Location</a>
+  </div>
+</nav>
+
+<!-- HERO BAND -->
+<section class="hero-band">
+  <div class="hero-band-inner">
+    <h2>Bold flavours, <em>island roots.</em><br>Jerk the way it was meant to be.</h2>
+    <p>Every dish is marinated overnight in our signature jerk blend — scotch bonnet, allspice, thyme — then finished on the open grill. No shortcuts. Just fire and tradition.</p>
+    <div class="hero-badges">
+      <span class="hero-badge">Real Jerk Seasoning</span>
+      <span class="hero-badge">Pimento Smoked</span>
+      <span class="hero-badge">Island Tradition</span>
+      <span class="hero-badge">Made Fresh Daily</span>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main>
+
+  <!-- JERK CHICKEN -->
+  <div id="jerk" class="section-header reveal">
+    <span class="section-eyebrow">Signature</span>
+    <h2 class="section-title">Jerk Chicken</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="menu-grid">
+    <div class="menu-card reveal">
+      <div class="card-top">
+        <img class="card-photo" src="jerk1.png" alt="Jerk Chicken Rice &amp; Peas" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="card-photo-placeholder" style="display:none"><span>🍗</span><p>Add jerk1.png</p></div>
+        <div class="card-name-bar"><div class="card-name">Jerk Chicken Rice &amp; Peas</div></div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Tender jerk chicken seasoned with our signature blend of scotch bonnet, allspice, and thyme, served over classic Jamaican rice and peas slow-cooked in coconut milk.</p>
+        <div class="card-footer">
+          <span class="card-price">$15.00</span>
+          <div class="heat-indicator"><span class="pepper">🌶️</span><span class="pepper">🌶️</span><span class="pepper off">🌶️</span></div>
+          <span class="tag tag-popular">Most Popular</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal">
+      <div class="card-top">
+        <img class="card-photo" src="jerk2.png" alt="Stew Chicken Rice &amp; Peas" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="card-photo-placeholder" style="display:none"><span>🍗</span><p>Add jerk2.png</p></div>
+        <div class="card-name-bar"><div class="card-name">Stew Chicken Rice &amp; Peas</div></div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Hearty brown-stewed chicken braised low and slow in a rich gravy of aromatics and island spices, served alongside our creamy coconut rice and peas.</p>
+        <div class="card-footer">
+          <span class="card-price">$15.00</span>
+          <div class="heat-indicator"><span class="pepper">🌶️</span><span class="pepper">🌶️</span><span class="pepper off">🌶️</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal">
+      <div class="card-top">
+        <img class="card-photo" src="jerk3.png" alt="Curry Goat Rice &amp; Peas" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="card-photo-placeholder" style="display:none"><span>🍗</span><p>Add jerk3.png</p></div>
+        <div class="card-name-bar"><div class="card-name">Curry Goat Rice &amp; Peas</div></div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Fall-off-the-bone curry goat simmered in a bold Jamaican curry sauce with potatoes and scotch bonnet — a true island classic served with coconut rice and peas.</p>
+        <div class="card-footer">
+          <span class="card-price">$18.00</span>
+          <div class="heat-indicator"><span class="pepper">🌶️</span><span class="pepper">🌶️</span><span class="pepper off">🌶️</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal">
+      <div class="card-top">
+        <img class="card-photo" src="jerk4.png" alt="Jerk Chicken Only" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="card-photo-placeholder" style="display:none"><span>🔥</span><p>Add jerk4.png</p></div>
+        <div class="card-name-bar"><div class="card-name">Jerk Chicken Only</div></div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Our signature jerk chicken — marinated overnight in authentic Jamaican seasoning and grilled over open flame for the perfect smoky char. Nothing extra, just pure flavour.</p>
+        <div class="card-footer">
+          <span class="card-price">$15.00</span>
+          <div class="heat-indicator"><span class="pepper">🌶️</span><span class="pepper">🌶️</span><span class="pepper">🌶️</span></div>
+          <span class="tag tag-new">Chef's Heat</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal">
+      <div class="card-top">
+        <img class="card-photo" src="jerk5.png" alt="Jerk Mac &amp; Cheese" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="card-photo-placeholder" style="display:none"><span>🍖</span><p>Add jerk5.png</p></div>
+        <div class="card-name-bar"><div class="card-name">Jerk Mac &amp; Cheese</div></div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Creamy, slow-baked mac and cheese topped with sliced jerk chicken and finished with a drizzle of our house jerk sauce. Comfort food with a serious island kick.</p>
+        <div class="card-footer">
+          <span class="card-price">$15.00</span>
+          <div class="heat-indicator"><span class="pepper">🌶️</span><span class="pepper">🌶️</span><span class="pepper off">🌶️</span></div>
+          <span class="tag tag-popular">Fan Favourite</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal">
+      <div class="card-top">
+        <img class="card-photo" src="jerk6.png" alt="Jerk Chicken Bowl" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="card-photo-placeholder" style="display:none"><span>🫙</span><p>Add jerk6.png</p></div>
+        <div class="card-name-bar"><div class="card-name">Jerk Chicken Bowl</div></div>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Tender jerk chicken breast over seasoned rice and peas with our signature sauce drizzled on top. Island comfort in a bowl.</p>
+        <div class="card-footer">
+          <span class="card-price">$13.99</span>
+          <div class="heat-indicator"><span class="pepper">🌶️</span><span class="pepper off">🌶️</span><span class="pepper off">🌶️</span></div>
+          <span class="tag tag-new">New</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- SIDES -->
+  <div id="sides" class="section-header reveal">
+    <span class="section-eyebrow">Accompaniments</span>
+    <h2 class="section-title">Sides</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="sides-grid">
+    <div class="side-card reveal">
+      <img class="side-photo" src="side1.jpeg" alt="Rice &amp; Peas" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="side-photo-placeholder" style="display:none"><span>🍚</span></div>
+      <div class="side-name">Rice &amp; Peas</div>
+    </div>
+    <div class="side-card reveal">
+      <img class="side-photo" src="side2.jpeg" alt="Mac &amp; Cheese" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="side-photo-placeholder" style="display:none"><span>🧀</span></div>
+      <div class="side-name">Mac &amp; Cheese</div>
+    </div>
+    <div class="side-card reveal">
+      <img class="side-photo" src="side3.jpeg" alt="Pasta" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="side-photo-placeholder" style="display:none"><span>🍝</span></div>
+      <div class="side-name">Pasta</div>
+    </div>
+    <div class="side-card reveal">
+      <img class="side-photo" src="side4.jpeg" alt="Salad" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="side-photo-placeholder" style="display:none"><span>🥗</span></div>
+      <div class="side-name">Salad</div>
+    </div>
+  </div>
+
+  <!-- DRINKS -->
+  <div id="drinks" class="section-header reveal">
+    <span class="section-eyebrow">Beverages</span>
+    <h2 class="section-title">Drinks</h2>
+    <div class="section-rule"></div>
+  </div>
+
+  <div class="drinks-grid">
+    <div class="drink-card reveal">
+      <div class="drink-photo-wrap">
+        <img class="drink-photo" src="fllemonade.jpeg" alt="Frontline Lemonade" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="drink-photo-placeholder" style="display:none"><span>🍋</span></div>
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Frontline Lemonade</div>
+        <p class="drink-desc">Our house-made classic — fresh-squeezed lemon, cane sugar, and just the right amount of chill. Simple, clean, and seriously refreshing.</p>
+        <div class="drink-price">$3.00</div>
+      </div>
+    </div>
+    <div class="drink-card reveal">
+      <div class="drink-photo-wrap">
+        <img class="drink-photo" src="flstrawberry.jpeg" alt="Frontline Strawberry Lemonade" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="drink-photo-placeholder" style="display:none"><span>🍓</span></div>
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Strawberry Lemonade</div>
+        <p class="drink-desc">Real strawberries blended into our classic lemonade base. Sweet, a little tart, and the kind of drink you'll wish you ordered two of.</p>
+        <div class="drink-price">$3.00</div>
+      </div>
+    </div>
+    <div class="drink-card reveal">
+      <div class="drink-photo-wrap">
+        <img class="drink-photo" src="flmango.jpeg" alt="Frontline Mango Lemonade" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="drink-photo-placeholder" style="display:none"><span>🥭</span></div>
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Mango Lemonade</div>
+        <p class="drink-desc">Ripe tropical mango meets fresh lemon in this island-inspired blend. Bright, fruity, and pairs perfectly with the heat of our jerk.</p>
+        <div class="drink-price">$3.00</div>
+      </div>
+    </div>
+    <div class="drink-card reveal">
+      <div class="drink-photo-wrap">
+        <img class="drink-photo" src="flpassion.jpeg" alt="Passionfruit Lemonade" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="drink-photo-placeholder" style="display:none"><span>🍊</span></div>
+      </div>
+      <div class="drink-info">
+        <div class="drink-name">Passionfruit Lemonade</div>
+        <p class="drink-desc">Bold, exotic passionfruit with a zesty lemon kick — this one hits different. Tropical, vibrant, and unlike anything else on the menu.</p>
+        <div class="drink-price">$3.00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCATION -->
+  <section id="location" class="location-section reveal">
+    <div class="location-title">Find Us</div>
+    <div class="location-grid">
+      <div class="location-item">
+        <div class="location-item-label">Address</div>
+        <div class="location-item-value">493 2nd Ave<br>New York, NY 10016</div>
+      </div>
+      <div class="location-item">
+        <div class="location-item-label">Phone</div>
+        <div class="location-item-value"><a href="tel:+13478899413">347-889-9413</a></div>
+      </div>
+      <div class="location-item">
+        <div class="location-item-label">Hours</div>
+        <div class="location-item-value">
+          <table class="hours-table">
+            <tr><td>Mon – Thu</td><td>11am – 9pm</td></tr>
+            <tr><td>Fri – Sat</td><td>11am – 11pm</td></tr>
+            <tr><td>Sunday</td><td>12pm – 8pm</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="location-item">
+        <div class="location-item-label">Getting Here</div>
+        <div class="location-item-value">Near A/C/G Trains<br>Street parking available<br>Walk-in &amp; Takeout Welcome</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Frontline Jerk</div>
+    <div class="footer-rule"></div>
+    <p class="footer-sub">Authentic Jamaican &nbsp;&bull;&nbsp; Brooklyn, NY &nbsp;&bull;&nbsp; Est. in the Community</p>
+  </div>
+</footer>
+
+<script>
+/* Scroll reveal */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 60);
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+
+/* Scroll progress */
+const sb = document.getElementById('scroll-bar');
+window.addEventListener('scroll', () => {
+  sb.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+});
+
+/* Back to top */
+const bt = document.getElementById('back-top');
+window.addEventListener('scroll', () => bt.classList.toggle('show', window.scrollY > 400));
+bt.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+/* Active nav */
+const navBtns = document.querySelectorAll('.nav-btn');
+const secObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navBtns.forEach(b => b.classList.remove('active'));
+      const a = document.querySelector(`.nav-btn[href="#${entry.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin:'-40% 0px -50% 0px' });
+['jerk','combos','sides','drinks','location'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) secObs.observe(el);
+});
+</script>
+</body>
+</html>
